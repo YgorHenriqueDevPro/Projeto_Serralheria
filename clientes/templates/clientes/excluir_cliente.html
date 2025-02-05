@@ -1,0 +1,8 @@
+<h1>Excluir Cliente</h1>
+<p>Tem certeza de que deseja excluir o cliente {{ cliente.nome }}?</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Excluir</button>
+</form>
+<a href="{% url 'cliente:listar_clientes' %}">Cancelar</a>
+

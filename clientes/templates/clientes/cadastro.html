@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar novo usuário</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'clientes/css/stylecadastro.css' %}">
+    <script>
+        // Função para redirecionamento automático após exibir a mensagem de sucesso
+        function redirecionarParaLogin() {
+            setTimeout(function() {
+                window.location.href = "{% url 'login' %}";
+            }, 3000); // Redireciona após 3 segundos
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Cadastrar novo usuário</h2>
+        <p>Realize seu cadastro no sistema</p>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <script>
+                //usado javascript nessa parte do código
+                // Se houver mensagem de sucesso, inicia o redirecionamento para a tela de login
+                {% for message in messages %}
+                    {% if "success" in message.tags %}
+                        redirecionarParaLogin();
+                    {% endif %}
+                {% endfor %}
+            </script>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="nome">Nome completo</label>
+            <input type="text" id="nome" name="nome" required>
+            
+            <label for="login">Login (CPF ou Email)</label>
+            <input type="text" id="login" name="login" required>
+            
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" required>
+            
+            <label for="nova_senha">Confirme a senha</label>
+            <input type="password" id="nova_senha" name="nova_senha" required>
+            
+            <div class="buttons">
+                <button type="submit" class="btn enviar">Enviar</button>
+                <button type="button" class="btn cancelar" onclick="window.location.href='{% url 'login' %}';">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

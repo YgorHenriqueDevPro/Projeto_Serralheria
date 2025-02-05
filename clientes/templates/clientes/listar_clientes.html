@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  
+
+</head>
+<body>
+  <div class="container">
+    <h1>Lista de Clientes</h1>
+    <form method="get" class="search-form">
+      <input type="text" name="search" placeholder="Pesquisar cliente">
+      <button type="submit">Buscar</button>
+    </form>
+    <a href="{% url 'cliente:adicionar_cliente' %}" class="btn-cadastrar">Cadastrar Cliente</a>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>cpf_cnpj</th>
+          <th>Endereço</th>
+          <th>Celular</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in clientes %}
+        <tr>
+          <td>{{ cliente.nome }}</td>
+          <td>{{ cliente.cpf_cnpj }}</td>
+          <td>{{ cliente.endereco }}</td>
+          <td>{{ cliente.celular }}</td>
+          <td>{{ cliente.email }}</td>
+          <td>{{ cliente.telefone }}</td>
+          <td>
+            <a href="{% url 'cliente:editar_cliente' id=cliente.id %}">Editar</a>
+            <a href="{% url 'cliente:excluir_cliente' id=cliente.id %}">Excluir</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
