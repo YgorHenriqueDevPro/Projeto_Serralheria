@@ -6,13 +6,33 @@
     <title>Cadastrar novo usuário</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'clientes/css/stylecadastro.css' %}">
+
     <script>
-        // Função para redirecionamento automático após exibir a mensagem de sucesso
-        function redirecionarParaLogin() {
-            setTimeout(function() {
-                window.location.href = "{% url 'login' %}";
-            }, 3000); // Redireciona após 3 segundos
-        }
+        // Aguarda o carregamento do DOM antes de executar os scripts
+        document.addEventListener("DOMContentLoaded", function() {
+            // Função para redirecionar após cadastro bem-sucedido
+            function redirecionarParaLogin() {
+                setTimeout(function() {
+                    window.location.href = "{% url 'clientes:login' %}";
+                }, 3000); // 3 segundos
+            }
+
+            // Validação de senha
+            document.querySelector('form').addEventListener('submit', function(event) {
+                var senha = document.getElementById('senha').value;
+                var confirmar_senha = document.getElementById('confirmar_senha').value;
+
+                if (senha !== confirmar_senha) {
+                    alert("As senhas não coincidem.");
+                    event.preventDefault(); // Impede o envio do formulário
+                }
+            });
+
+            // Se houver mensagem de sucesso, redireciona automaticamente
+            if (document.querySelector('.messages .success')) {
+                redirecionarParaLogin();
+            }
+        });
     </script>
 </head>
 <body>
@@ -26,15 +46,6 @@
                     <li class="{{ message.tags }}">{{ message }}</li>
                 {% endfor %}
             </ul>
-            <script>
-                //usado javascript nessa parte do código
-                // Se houver mensagem de sucesso, inicia o redirecionamento para a tela de login
-                {% for message in messages %}
-                    {% if "success" in message.tags %}
-                        redirecionarParaLogin();
-                    {% endif %}
-                {% endfor %}
-            </script>
         {% endif %}
 
         <form method="POST">
@@ -47,14 +58,14 @@
             <input type="text" id="login" name="login" required>
             
             <label for="senha">Senha</label>
-            <input type="password" id="senha" name="senha" required>
+            <input type="password" id="senha" name="senha" autocomplete="new-password" required>
             
-            <label for="nova_senha">Confirme a senha</label>
-            <input type="password" id="nova_senha" name="nova_senha" required>
+            <label for="confirmar_senha">Confirme a senha</label>
+            <input type="password" id="confirmar_senha" name="confirmar_senha" autocomplete="new-password" required>
             
             <div class="buttons">
                 <button type="submit" class="btn enviar">Enviar</button>
-                <button type="button" class="btn cancelar" onclick="window.location.href='{% url 'login' %}';">Cancelar</button>
+                <button type="button" class="btn cancelar" onclick="window.location.href='{% url 'clientes:login' %}';">Cancelar</button>
             </div>
         </form>
     </div>

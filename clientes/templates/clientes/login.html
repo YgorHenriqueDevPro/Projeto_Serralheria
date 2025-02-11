@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Serralheria FerAço</title>
+  <title>Serralheria FerrAço</title>
+  
   <!-- Carregar arquivos estáticos -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'clientes/css/style.css' %}">
@@ -20,22 +21,25 @@
       {% endfor %}
     </div>
   {% endif %}
+
   <div class="container">
     <div class="sidebar">
-      <h1>Serralheria<br>FerAço</h1>
+      <h1>Serralheria<br>FerrAço</h1>
       <p>Entre ou cadastre-se</p>
       <a href="{% url 'cliente:cadastro' %}" class="btn-cadastrar">Cadastrar-se</a>
     </div>
+
     <div class="login-section">
       <h2>Olá, bem-vindo</h2>
       <div class="login-box">
         <form method="POST" action="{% url 'cliente:login' %}">
           {% csrf_token %}
-          <label for="login">Login</label>
-          <input type="text" id="login" name="username" placeholder="Login" required>
           
-          <label for="senha">Senha</label>
-          <input type="password" id="senha" name="password" placeholder="Senha" required>
+          <label for="username">Login</label>
+          <input type="text" id="username" name="username" placeholder="Digite seu login" required>
+          
+          <label for="password">Senha</label>
+          <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
           
           <a href="#" class="esqueceu-senha">Esqueci minha senha</a>
           <button type="submit" class="btn-entrar">Entrar</button>

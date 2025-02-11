@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'serralheriaweb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'Projeto_Serralheria',
-        'USER': 'postgres',
-        'PASSWORD':'123456789',
-        'HOST':'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Projeto_Serralheria', # Nome do banco de dados
+        'USER': 'postgres', # Usuário do PostgreSQL
+        'PASSWORD':'123456789', # Senha do PostgreSQL
+        'HOST':'localhost', # Se estiver rodando localmente
+        'PORT': '5432', # Porta padrão do PostgreSQL
     }
 }
 

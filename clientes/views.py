@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required #somente usuarios autenticados
+from django.contrib.auth.decorators import login_required  # Somente usuários autenticados
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -40,34 +40,48 @@ def login_view(request):
     
     return render(request, 'clientes/login.html')
 
-
-# Listar Clientes
-def listar_clientes(request):
-    clientes = Cliente.objects.all()
-    return render(request, 'cliente/listar_clientes.html', {'clientes': clientes})
-
-# Somente usuarios autenticados poderam ter acesso a lista de clientes
+# Listar Clientes (Somente usuários autenticados)
 @login_required
 def listar_clientes(request):
-    clientes = Cliente.objects.all()
+    # Verifica se há um termo de pesquisa no GET
+    search_query = request.GET.get('search', '')
+    
+    if search_query:
+        # Filtra os clientes pelo nome, caso haja um termo de pesquisa
+        clientes = Cliente.objects.filter(nome__icontains=search_query)
+    else:
+        # Caso não haja pesquisa, retorna todos os clientes
+        clientes = Cliente.objects.all()
+
     return render(request, 'clientes/listar_clientes.html', {'clientes': clientes})
 
-
 # Adicionar Cliente
+@login_required
 def adicionar_cliente(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
+        cpf_cnpj = request.POST.get('cpf_cnpj')
+        endereco = request.POST.get('endereco')
+        celular = request.POST.get('celular')
         email = request.POST.get('email')
         telefone = request.POST.get('telefone')
         
         # Cria o cliente e salva no banco
-        Cliente.objects.create(nome=nome, email=email, telefone=telefone)
+        Cliente.objects.create(
+            nome=nome,
+            cpf_cnpj=cpf_cnpj,
+            endereco=endereco,
+            celular=celular,
+            email=email,
+            telefone=telefone
+        )
         messages.success(request, "Cliente adicionado com sucesso!")
         return redirect('cliente:listar_clientes')
     
     return render(request, 'clientes/adicionar_cliente.html')
 
 # Editar Cliente
+@login_required
 def editar_cliente(request, id):
     cliente = get_object_or_404(Cliente, id=id)
     
@@ -80,17 +94,18 @@ def editar_cliente(request, id):
         cliente.telefone = request.POST.get('telefone')
         cliente.save()
         messages.success(request, "Cliente editado com sucesso!")
-        return redirect('listar_clientes')
+        return redirect('cliente:listar_clientes')
     
     return render(request, 'clientes/editar_cliente.html', {'cliente': cliente})
 
 # Excluir Cliente
+@login_required
 def excluir_cliente(request, id):
     cliente = get_object_or_404(Cliente, id=id)
     
     if request.method == 'POST':
         cliente.delete()
         messages.success(request, "Cliente excluído com sucesso!")
-        return redirect('listar_clientes')
+        return redirect('cliente:listar_clientes')
     
     return render(request, 'clientes/excluir_cliente.html', {'cliente': cliente})

@@ -4,45 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clientes</title>
-  
-
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'clientes/css/style.css' %}">
 </head>
 <body>
   <div class="container">
     <h1>Lista de Clientes</h1>
-    <form method="get" class="search-form">
-      <input type="text" name="search" placeholder="Pesquisar cliente">
-      <button type="submit">Buscar</button>
+    
+    <!-- Formulário de Pesquisa -->
+    <form method="GET" class="search-form">      
+      <input type="text" name="search" placeholder="Pesquisar cliente" aria-label="Pesquisar cliente" value="{{ request.GET.search }}">
+      <button type="submit" aria-label="Buscar">Buscar</button>
     </form>
-    <a href="{% url 'cliente:adicionar_cliente' %}" class="btn-cadastrar">Cadastrar Cliente</a>
+
+    <!-- Botão para Cadastrar Cliente -->
+    <a href="{% url 'cliente:adicionar_cliente' %}" class="btn-cadastrar" aria-label="Cadastrar Cliente">Cadastrar Cliente</a>
+
+    <!-- Tabela de Clientes -->
     <table>
       <thead>
         <tr>
           <th>Nome</th>
-          <th>cpf_cnpj</th>
+          <th>CPF/CNPJ</th>
           <th>Endereço</th>
           <th>Celular</th>
           <th>Email</th>
           <th>Telefone</th>
-          
           <th>Ações</th>
         </tr>
       </thead>
       <tbody>
-        {% for cliente in clientes %}
-        <tr>
-          <td>{{ cliente.nome }}</td>
-          <td>{{ cliente.cpf_cnpj }}</td>
-          <td>{{ cliente.endereco }}</td>
-          <td>{{ cliente.celular }}</td>
-          <td>{{ cliente.email }}</td>
-          <td>{{ cliente.telefone }}</td>
-          <td>
-            <a href="{% url 'cliente:editar_cliente' id=cliente.id %}">Editar</a>
-            <a href="{% url 'cliente:excluir_cliente' id=cliente.id %}">Excluir</a>
-          </td>
-        </tr>
-        {% endfor %}
+        {% if clientes %}
+          {% for cliente in clientes %}
+          <tr>
+            <td>{{ cliente.nome }}</td>
+            <td>{{ cliente.cpf_cnpj }}</td>
+            <td>{{ cliente.endereco }}</td>
+            <td>{{ cliente.celular }}</td>
+            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.telefone }}</td>
+            <td>
+              <a href="{% url 'cliente:editar_cliente' cliente.id_cliente %}" class="btn-editar" aria-label="Editar cliente {{ cliente.nome }}">Editar</a>
+              <a href="{% url 'cliente:excluir_cliente' cliente.id_cliente%}" class="btn-excluir" aria-label="Excluir cliente {{ cliente.nome }}">Excluir</a>
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="7">Nenhum cliente cadastrado.</td>
+          </tr>
+        {% endif %}
       </tbody>
     </table>
   </div>
