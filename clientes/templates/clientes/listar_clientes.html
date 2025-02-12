@@ -4,8 +4,86 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clientes</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'clientes/css/style.css' %}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0px 0px 10px #ccc;
+      border-radius: 5px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .search-form {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 60%;
+    }
+    .btn-buscar {
+      padding: 8px 15px;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 3px;
+    }
+    .btn-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .btn-cadastrar {
+      text-decoration: none;
+      background: #28a745;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 3px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+      word-wrap: break-word;
+    }
+    th {
+      background: #007bff;
+      color: white;
+    }
+    .acoes {
+      text-align: center;
+    }
+    .acoes a {
+      text-decoration: none;
+      padding: 5px 10px;
+      margin: 5px;
+      display: inline-block;
+      border-radius: 3px;
+    }
+    .btn-editar {
+      background: #ffc107;
+      color: black;
+    }
+    .btn-excluir {
+      background: #dc3545;
+      color: white;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -14,11 +92,13 @@
     <!-- Formulário de Pesquisa -->
     <form method="GET" class="search-form">      
       <input type="text" name="search" placeholder="Pesquisar cliente" aria-label="Pesquisar cliente" value="{{ request.GET.search }}">
-      <button type="submit" aria-label="Buscar">Buscar</button>
+      <button type="submit" class="btn-buscar" aria-label="Buscar">Buscar</button>
     </form>
 
     <!-- Botão para Cadastrar Cliente -->
-    <a href="{% url 'cliente:adicionar_cliente' %}" class="btn-cadastrar" aria-label="Cadastrar Cliente">Cadastrar Cliente</a>
+    <div class="btn-container">
+      <a href="{% url 'cliente:adicionar_cliente' %}" class="btn-cadastrar" aria-label="Cadastrar Cliente">Cadastrar Cliente</a>
+    </div>
 
     <!-- Tabela de Clientes -->
     <table>
@@ -26,10 +106,10 @@
         <tr>
           <th>Nome</th>
           <th>CPF/CNPJ</th>
-          <th>Endereço</th>
           <th>Celular</th>
-          <th>Email</th>
           <th>Telefone</th>
+          <th>Email</th>
+          <th>Endereço</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -39,13 +119,13 @@
           <tr>
             <td>{{ cliente.nome }}</td>
             <td>{{ cliente.cpf_cnpj }}</td>
-            <td>{{ cliente.endereco }}</td>
             <td>{{ cliente.celular }}</td>
-            <td>{{ cliente.email }}</td>
             <td>{{ cliente.telefone }}</td>
-            <td>
+            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.endereco }}</td>
+            <td class="acoes">
               <a href="{% url 'cliente:editar_cliente' cliente.id_cliente %}" class="btn-editar" aria-label="Editar cliente {{ cliente.nome }}">Editar</a>
-              <a href="{% url 'cliente:excluir_cliente' cliente.id_cliente%}" class="btn-excluir" aria-label="Excluir cliente {{ cliente.nome }}">Excluir</a>
+              <a href="{% url 'cliente:excluir_cliente' cliente.id_cliente %}" class="btn-excluir" aria-label="Excluir cliente {{ cliente.nome }}">Excluir</a>
             </td>
           </tr>
           {% endfor %}

@@ -83,7 +83,7 @@ def adicionar_cliente(request):
 # Editar Cliente
 @login_required
 def editar_cliente(request, id):
-    cliente = get_object_or_404(Cliente, id=id)
+    cliente = Cliente.objects.get(id_cliente=id)
     
     if request.method == 'POST':
         cliente.nome = request.POST.get('nome')
@@ -101,7 +101,7 @@ def editar_cliente(request, id):
 # Excluir Cliente
 @login_required
 def excluir_cliente(request, id):
-    cliente = get_object_or_404(Cliente, id=id)
+    cliente = Cliente.objects.get(id_cliente=id)
     
     if request.method == 'POST':
         cliente.delete()
